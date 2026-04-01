@@ -42,3 +42,27 @@ jobs:
               with:
                 name: Test-Results
                 path: test-result.xml
+
+    code-coverage:
+        name: Run Code Coverage
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Code Repo
+              uses: actions/checkout@v4
+            
+            - name: Setup NodeJs Version - 18
+              uses: actions/setup-node@v5
+              with:
+                  node-version: ${{ matrix.node-version }}
+            - name: Install Dependencies
+              run: npm install
+
+            - name: Check Code Coverage
+              run: npm run coverage
+            
+            - name: Upload Code Coverage Result
+              uses: actions/upload-artifact@v6
+              with:
+                name: Code-Coverage-Results
+                path: coverage/
+                retention-days: 5
