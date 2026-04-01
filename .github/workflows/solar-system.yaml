@@ -14,6 +14,14 @@ env:
 
 jobs:
     unit-testing:
+        name: Run Unit Tests
+        strategy:
+            matrix:
+                node-version: [18, 19, 20]
+                operation_system: [ubuntu-latest, macos-latest]
+                exclude:
+                    - node-version: 18
+                      operation_system: macos-latest
         runs-on: ubuntu-latest
         steps:
             - name: Checkout Code Repo
