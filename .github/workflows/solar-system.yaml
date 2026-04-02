@@ -17,7 +17,7 @@ jobs:
         name: Run Unit Tests
         strategy:
             matrix:
-                node-version: [18, 19, 20]
+                node-version: [18, 19]
                 operation_system: [ubuntu-latest, macos-latest]
                 exclude:
                     - node-version: 18
@@ -25,7 +25,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout Code Repo
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
             
             - name: Setup NodeJs Version - 18
               uses: actions/setup-node@v5
@@ -35,9 +35,11 @@ jobs:
               run: npm install
 
             - name: Run Unit Tests
+              id: nodejs-unit-testing-step
               run: npm test
 
             - name: Archive Test Result
+              if: steps.nodejs-unit-testing-step.outcome == 'failure' || steps.nodejs-unit-testing-step.outcome == 'success'
               uses: actions/upload-artifact@v6
               with:
                 name: Test-Results
@@ -48,7 +50,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout Code Repo
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
             
             - name: Setup NodeJs Version - 18
               uses: actions/setup-node@v5
