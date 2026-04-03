@@ -167,6 +167,9 @@ jobs:
         - name: Checkout Code Repo
           uses: actions/checkout@v6
 
+        - name: Create k8s Kind Cluster
+          uses: helm/kind-action@v1.10.0
+
         - name: Install K8s CLI
           uses: azure/setup-kubectl@v4
           with:
