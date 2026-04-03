@@ -170,7 +170,7 @@ jobs:
         - name: Install K8s CLI
           uses: azure/setup-kubectl@v4
           with:
-            version: default
+            version: 'latest'
           id: install
 
         - name: Fetch K8s Cluster Details
