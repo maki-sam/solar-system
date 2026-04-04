@@ -167,8 +167,14 @@ jobs:
         - name: Checkout Code Repo
           uses: actions/checkout@v6
 
-        - name: Create k8s Kind Cluster
-          uses: helm/kind-action@v1.10.0
+        # - name: Create k8s Kind Cluster
+        #   uses: helm/kind-action@v1.10.0
+
+        - name: Set Kubeconfig file
+          uses: azure/k8s-set-context@v3
+          with:
+            method: kubeconfig
+            kubeconfig: ${{ secrets.KUBE_CONFIG_DATA }}
 
         - name: Install K8s CLI
           uses: azure/setup-kubectl@v4
@@ -181,3 +187,15 @@ jobs:
             kubectl version -o yaml
             echo -------------------------
             kubectl get nodes
+
+        # - name: Replace Tokens in K8s
+        #   uses: cschleiden/replace-tokens@v1
+        #   with:
+        #     tokenPrefix: '_{_'
+        #     tokenSuffix: '_}_'
+        #     files: 'kubernetes/development/*.yaml'
+        #   env:
+        #     NAMESPACE: ${{ vars.NAMESPACE }}
+        #     REPLICAS: ${{ vars.REPLICAS }}
+        #     K8S_IMAGE: ${{ vars.DOCKER_USERNAME }}/solar-system:${{ github.sha }}
+        #     INGRESS_IP: 
