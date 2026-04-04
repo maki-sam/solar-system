@@ -216,8 +216,8 @@ jobs:
             --from-literal=MONGO_USERNAME=${{ env.MONGO_USERNAME }} \
             --from-literal=MONGO_PASSWORD=${{ env.MONGO_PASSWORD }} \
             --save-config=true \
-            -n ${NAMESPACE} --dry-run=client -o yaml | kubectl apply -f -
+            -n ${{ vars.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -
             
         - name: Deploy to Dev Environment
           run: |
-            kubectl apply -f kubernetes/development/ -n ${NAMESPACE}
+            kubectl apply -f kubernetes/development/ -n ${{ vars.NAMESPACE }}
