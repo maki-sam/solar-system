@@ -205,6 +205,10 @@ jobs:
             K8S_IMAGE: ${{ vars.DOCKER_USERNAME }}/solar-system:${{ github.sha }}
             INGRESS_IP: ${{ secrets.INGRESS_IP }}
 
+        - name: Create Namespace (If Not Exists)
+          run: |
+            kubectl create namespace ${{ vars.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -
+
         - name: Check K8s Files
           run: |
             cat kubernetes/development/deployment.yaml
