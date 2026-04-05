@@ -28,7 +28,7 @@ jobs:
             matrix:
                 node-version: [18, 19]
                 operation_system: [ubuntu-latest]
-        runs-on: ${{ matrix.operation_system }}
+        runs-on: ubuntu-latest
         steps:
             - name: Checkout Code Repo
               uses: actions/checkout@v6
@@ -71,7 +71,7 @@ jobs:
               MONGO_URI: 'mongodb://mongo:27017/superData'
               MONGO_USERNAME: non-prod-user
               MONGO_PASSWORD: non-prod-password
-        runs-on: ${{ matrix.operation_system }}
+        runs-on: ubuntu-latest
         steps:
             - name: Checkout Code Repo
               uses: actions/checkout@v6
@@ -107,7 +107,7 @@ jobs:
       permissions:
         contents: read
         packages: write
-      runs-on: ${{ matrix.operation_system }}
+      runs-on: ubuntu-latest
       steps:
         - name: Checkout Code Repo
           uses: actions/checkout@v6
@@ -164,7 +164,7 @@ jobs:
       needs: docker
       outputs:
         APP_INGRESS_URL: ${{ steps.set-app-ingress-url.outputs.APP_INGRESS_HOST }}
-      runs-on: ${{ matrix.operation_system }}
+      runs-on: ubuntu-latest
       steps:
         - name: Checkout Code Repo
           uses: actions/checkout@v6
@@ -237,7 +237,7 @@ jobs:
             
     integration-testing:
       needs: dev-deployment
-      runs-on: ${{ matrix.operation_system }}
+      runs-on: ubuntu-latest
       steps:
         - name: Test URL Output with CURL
           env:
