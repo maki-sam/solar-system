@@ -28,7 +28,7 @@ jobs:
             matrix:
                 node-version: [18, 19]
                 operation_system: [ubuntu-latest]
-        runs-on: ubuntu-latest
+        runs-on: ${{ matrix.operation_system }}
         steps:
             - name: Checkout Code Repo
               uses: actions/checkout@v6
@@ -55,7 +55,7 @@ jobs:
               if: always()
               uses: actions/upload-artifact@v6
               with:
-                name: Test-Results
+                name: Test-Results-${{ matrix.node-version }}
                 path: test-result.xml
 
     code-coverage:
@@ -71,7 +71,7 @@ jobs:
               MONGO_URI: 'mongodb://mongo:27017/superData'
               MONGO_USERNAME: non-prod-user
               MONGO_PASSWORD: non-prod-password
-        runs-on: ubuntu-latest
+        runs-on: ${{ matrix.operation_system }}
         steps:
             - name: Checkout Code Repo
               uses: actions/checkout@v6
@@ -107,7 +107,7 @@ jobs:
       permissions:
         contents: read
         packages: write
-      runs-on: ubuntu-latest
+      runs-on: ${{ matrix.operation_system }}
       steps:
         - name: Checkout Code Repo
           uses: actions/checkout@v6
@@ -162,7 +162,9 @@ jobs:
 
     dev-deployment:
       needs: docker
-      runs-on: ubuntu-latest
+      outputs:
+        APP_INGRESS_URL: ${{ steps.set-app-ingress-url.outputs.APP_INGRESS_HOST }}
+      runs-on: ${{ matrix.operation_system }}
       steps:
         - name: Checkout Code Repo
           uses: actions/checkout@v6
@@ -229,11 +231,13 @@ jobs:
         - name: Set App Ingress URL
           id: set-app-ingress-url
           run: |
-            echo "APP_INGRESS_HOST=$(kubectl get ingress -n ${{ vars.NAMESPACE }} solar-system -o jsonpath='{.spec.rules[0].host}')"
+            echo "APP_INGRESS_HOST=$(kubectl get ingress \
+            -n ${{ vars.NAMESPACE }} solar-system \
+            -o jsonpath='{.spec.rules[0].host}')" >> $GITHUB_OUTPUT
             
     integration-testing:
       needs: dev-deployment
-      runs-on: ubuntu-latest
+      runs-on: ${{ matrix.operation_system }}
       steps:
         - name: Test URL Output with CURL
           env:
