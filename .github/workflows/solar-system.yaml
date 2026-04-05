@@ -1,4 +1,4 @@
-name: solar-system-work flow
+name: solar-system-work0flow
 
 on:
     workflow_dispatch:
@@ -162,13 +162,9 @@ jobs:
 
     dev-deployment:
       needs: docker
-<<<<<<< HEAD
       outputs:
         APP_INGRESS_URL: ${{ steps.set-app-ingress-url.outputs.APP_INGRESS_HOST }}
       runs-on: ${{ matrix.operation_system }}
-=======
-      runs-on: ubuntu-latest
->>>>>>> parent of 2b7e9c6 (add URL Check integration)
       steps:
         - name: Checkout Code Repo
           uses: actions/checkout@v6
@@ -230,7 +226,6 @@ jobs:
             
         - name: Deploy to Dev Environment
           run: |
-<<<<<<< HEAD
             kubectl apply -f kubernetes/development/ -n ${{ vars.NAMESPACE }}
 
         - name: Set App Ingress URL
@@ -251,6 +246,3 @@ jobs:
             echo $URL
             echo "---------------------------"
             curl https://$URL/live -s -k  | jq -r .status | grep -i live
-=======
-            kubectl apply -f kubernetes/development/ -n ${{ vars.NAMESPACE }}
->>>>>>> parent of 2b7e9c6 (add URL Check integration)
